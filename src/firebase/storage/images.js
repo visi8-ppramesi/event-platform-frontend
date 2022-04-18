@@ -5,7 +5,10 @@ import {
     getDownloadURL,
 } from "firebase/storage";
 import { validateImage } from "@/_services/validators";
-
+/*
+    so uploading images has to be handled by firebase functions, no two way about it.
+    has to be renamed and check for file type (use security rules), otherwise security breach. 
+*/
 export default class{
     static async uploadImages(files){
         const validatedFiles = []
