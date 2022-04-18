@@ -1,16 +1,42 @@
 import firebase from '../firebase.js'
-import { doc, query, orderBy, startAt, endAt, collection, getDocs, getDoc } from "firebase/firestore";  
+import { 
+    doc, 
+    query, 
+    startAt, 
+    endAt, 
+    collection, 
+    getDocs, 
+    getDoc, 
+    addDoc, 
+    runTransaction, 
+    arrayRemove, 
+    arrayUnion, 
+    increment 
+} from "firebase/firestore";  
+import { validatePostData } from '@/_services/validators.js';
 
 export default class{
+    static async createPost(id, text, images = []){
+        const userRef = doc(firebase.db, 'users', firebase.auth.currentUser.uid)
+        const postRef = collection(firebase.db, 'events', id, 'posts')
+        return await addDoc(postRef, {
+            date: new Date(),
+            user: userRef,
+            status: 0,
+            images,
+            text: validatePostData(text), 
+        })
+    }
+
     static async getArtist(id, withPosts = false){
         const promises = []
 
-        eventRef = doc(firebase.db, 'events', id)
+        const eventRef = doc(firebase.db, 'events', id)
         const doc = getDoc(eventRef)
         promises.push(doc)
 
         if(withPosts){
-            postsRef = collection(firebase.db, 'events', id, 'posts')
+            const postsRef = collection(firebase.db, 'events', id, 'posts')
             const postsDoc = getDocs(postsRef)
             promises.push(postsDoc)
         }
@@ -25,12 +51,15 @@ export default class{
     }
 
     static async toggleEventSubscribe(eventId){
-        const uidRef = doc(db, 'users/' + firebase.auth.currentUser.uid)
-        const eventIdRef = doc(db, 'events/' + eventId)
-        const pivotRef = doc(db, 'users_events_subscribers/' + eventId)
+        if(!firebase.auth.currentUser){
+            return -1
+        }
+        const uidRef = doc(firebase.db, 'users/' + firebase.auth.currentUser.uid)
+        const eventIdRef = doc(firebase.db, 'events/' + eventId)
+        const pivotRef = doc(firebase.db, 'users_events_subscribers/' + eventId)
 
         try {
-            const rt = runTransaction(db, async (t) => {
+            const rt = runTransaction(firebase.db, async (t) => {
                 const uDoc = t.get(uidRef)
                 const eDoc = t.get(eventIdRef)
                 const pDoc = t.get(pivotRef)

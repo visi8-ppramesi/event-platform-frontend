@@ -1,7 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore"; 
-import { getAuth } from 'firebase/auth';import dotenv from 'dotenv'
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage'
+import dotenv from 'dotenv';
 
 const env = dotenv.config().parsed;
 
@@ -18,5 +20,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
+const storage = getStorage(app)
 
-export default {app, db, auth, analytics};
+export default {app, db, auth, storage, analytics};

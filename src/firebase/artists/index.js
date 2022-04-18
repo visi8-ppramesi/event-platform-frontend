@@ -1,16 +1,42 @@
 import firebase from '../firebase.js'
-import { doc, query, orderBy, startAt, endAt, collection, getDocs, getDoc } from "firebase/firestore";  
+import { 
+    doc, 
+    query, 
+    startAt, 
+    endAt, 
+    collection, 
+    getDocs, 
+    getDoc, 
+    addDoc, 
+    runTransaction, 
+    arrayRemove, 
+    arrayUnion, 
+    increment 
+} from "firebase/firestore";  
+import { validatePostData } from '@/_services/validators.js';
 
 export default class{
+    static async createPost(id, text, images = []){
+        const userRef = doc(firebase.db, 'users', firebase.auth.currentUser.uid)
+        const postRef = collection(firebase.db, 'artists', id, 'posts')
+        return await addDoc(postRef, {
+            date: new Date(),
+            user: userRef,
+            status: 0,
+            images,
+            text: validatePostData(text), 
+        })
+    }
+
     static async getArtist(id, withPosts = false){
         const promises = []
 
-        artistsRef = doc(firebase.db, 'artists', id)
+        const artistsRef = doc(firebase.db, 'artists', id)
         const doc = getDoc(artistsRef)
         promises.push(doc)
 
         if(withPosts){
-            postsRef = collection(firebase.db, 'artists', id, 'posts')
+            const postsRef = collection(firebase.db, 'artists', id, 'posts')
             const postsDoc = getDocs(postsRef)
             promises.push(postsDoc)
         }
@@ -25,12 +51,15 @@ export default class{
     }
 
     static async toggleArtistFollow(artistId){
-        const uidRef = doc(db, 'users/' + firebase.auth.currentUser.uid)
-        const artistIdRef = doc(db, 'artists/' + artistId)
-        const pivotRef = doc(db, 'users_artist_followings/' + artistId)
+        if(!firebase.auth.currentUser){
+            return -1
+        }
+        const uidRef = doc(firebase.db, 'users/' + firebase.auth.currentUser.uid)
+        const artistIdRef = doc(firebase.db, 'artists/' + artistId)
+        const pivotRef = doc(firebase.db, 'users_artist_followings/' + artistId)
 
         try {
-            return await runTransaction(db, async (t) => {
+            return await runTransaction(firebase.db, async (t) => {
                 const uDoc = t.get(uidRef)
                 const eDoc = t.get(artistIdRef)
                 const pDoc = t.get(pivotRef)
