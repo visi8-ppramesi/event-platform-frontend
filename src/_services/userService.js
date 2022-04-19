@@ -1,4 +1,5 @@
 import { authHeader } from '../_helpers';
+import { User } from '../firebase/index.js'
 
 export const userService = {
     login,
@@ -10,24 +11,25 @@ export const userService = {
     delete: _delete
 };
 
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
+function login(email, password) {
+    return User.login(email, password)
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ username, password })
+    // };
 
-    return fetch(`/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // login successful if there's a jwt token in the response
-            if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
+    // return fetch(`/users/authenticate`, requestOptions)
+    //     .then(handleResponse)
+    //     .then(user => {
+    //         // login successful if there's a jwt token in the response
+    //         if (user.token) {
+    //             // store user details and jwt token in local storage to keep user logged in between page refreshes
+    //             localStorage.setItem('user', JSON.stringify(user));
+    //         }
 
-            return user;
-        });
+    //         return user;
+    //     });
 }
 
 function logout() {
