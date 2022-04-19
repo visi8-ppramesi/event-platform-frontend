@@ -7,6 +7,9 @@ import AlertView from '../views/AlertView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import ArtistDetail from '../views/ArtistDetail.vue'
+import EventDetail from '../views/EventDetail.vue'
+import SettingsView from '../views/SettingsView.vue'
 
 Vue.use(VueRouter)
 
@@ -50,6 +53,21 @@ const routes = [
     name: 'register',
     component: RegisterView
   },
+  {
+    path: '/artist/detail',
+    name: 'artist',
+    component: ArtistDetail
+  },
+  {
+    path: '/event/detail',
+    name: 'event',
+    component: EventDetail
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SettingsView
+  },
 ]
 
 const router = new VueRouter({
@@ -58,16 +76,16 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('user');
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['/login', '/register'];
+//   const authRequired = !publicPages.includes(to.path);
+//   const loggedIn = localStorage.getItem('user');
 
-  if (authRequired && !loggedIn) {
-    return next('/login');
-  }
+//   if (authRequired && !loggedIn) {
+//     return next('/login');
+//   }
 
-  next();
-});
+//   next();
+// });
 
 export default router

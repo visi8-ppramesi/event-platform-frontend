@@ -3,23 +3,27 @@
         <div class="pt-3" v-for="item in content" :key="item.index">
             <div  v-if="type === 'recommended' ">
                 <div class="h-full w-36 pr-2">
-                    <img class="h-36 w-36" :src="item.image">
-                    <div class="text-xs pt-2">
-                        <p>{{item.title}}</p>
-                        <p>{{item.place}}</p>
-                        <p>{{item.time}}</p>
-                    </div>
+                    <router-link to="/artist/detail">
+                         <img class="h-36 w-36" :src="item.image">
+                        <div class="text-xs pt-2">
+                            <p>{{item.title}}</p>
+                            <p>{{item.place}}</p>
+                            <p>{{item.time}}</p>
+                        </div>
+                    </router-link>
                 </div>
             </div>
 
             <div  v-if="type === 'upcoming' ">
                 <div class="h-full w-64 pr-3">
-                    <img class="object-cover h-40 w-full" :src="item.image">
-                    <div class="text-xs pt-2">
-                        <p>{{item.title}}</p>
-                        <p>{{item.place}}</p>
-                        <p>{{item.time}}</p>
-                    </div>
+                    <router-link to="/event/detail">
+                        <img class="object-cover h-40 w-full" :src="item.image">
+                        <div class="text-xs pt-2">
+                            <p>{{item.title}}</p>
+                            <p>{{item.place}}</p>
+                            <p>{{item.time}}</p>
+                        </div>
+                    </router-link>
                 </div>
             </div>
         </div>

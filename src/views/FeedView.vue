@@ -1,5 +1,5 @@
 <template>
-  <div class="home h-full w-full text-white">
+  <div style="background-color: #202424" class="home h-full w-full text-white">
     <NavBar class="py-2 md:text-2xl" title="Feed View" />
     <div class="bg-black">
         <div class="flex py-5 px-5">

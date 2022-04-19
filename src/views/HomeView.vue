@@ -1,5 +1,5 @@
 <template>
-  <div class="home h-full w-full text-white">
+  <div style="background-color: #202424" class="h-full w-full text-white">
     <NavBar class="py-2 md:text-2xl" title="Home View"/>
     <div class="p-3">
         <p class="text-l md:text-2xl">Recommended for you</p>
@@ -105,7 +105,4 @@ export default {
 </script>
 
 <style>
-  .home{
-    background-color: #202424; 
-  }
 </style>
