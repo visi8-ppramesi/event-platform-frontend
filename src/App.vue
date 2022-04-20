@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div style="background-color: #544f4f" class="h-full">
    <SideBar>
      <ul class="sidebar-panel-nav text-lg divide-y-2">
       <div>
@@ -50,7 +50,9 @@
       </div>
      </ul>
    </SideBar>
-    <router-view />
+    <div class="md:mx-10 md:h-full">
+      <router-view />
+    </div>
   </div>
 </template>
 

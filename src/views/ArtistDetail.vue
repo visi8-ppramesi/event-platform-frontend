@@ -2,17 +2,36 @@
     <div class="bg-black h-full w-full pb-8 text-white">
         <div class="bg-cover header w-full h-96">
             <div class="backdrop-filter backdrop-blur-md w-full h-96">
-                <div class="flex items-center justify-center">
-                    <img class="mt-10 h-40 w-40" :src="jb" />
+                <div class="md:flex">
+                    <div class="flex items-center justify-center">
+                        <img class="mt-10 h-40 w-40 rounded-3xl md:p-3 md:h-64 md:w-64 md:mt-28" :src="jb" />
+                    </div>
+                    <div class="md:flex md:items-center md:p-3 md:mt-24">
+                        <div class="md:text-left text-center" v-for="item in datas" :key="item.index">
+                            <p class="md:text-xl md:font-bold">{{item.title}}</p>
+                            <p class="md:text-lg">{{item.place}}</p>
+                            <p class="md:text-md">{{item.date}}</p>
+                            <p class="md:text-sm">{{item.fans}} fans interested</p>
+                            <p class="text-xs mt-2 md:text-sm">Listen to Justin Bieber</p>
+                            <div class="hidden md:block md:visible text-center text-xs mt-2">
+                                <div class="mt-3">
+                                    <div class="py-1 px-1">
+                                        <button class="bg-red-800 w-40 px-3 md:w-56 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                            Get Tickets
+                                        </button>
+                                    </div>
+                                    <div class="py-1 px-1">
+                                        <button class="bg-white w-40 px-3 md:w-56 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded-full">
+                                            Remind Me
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="text-center" v-for="item in datas" :key="item.index">
-                    <p>{{item.title}}</p>
-                    <p>{{item.place}}</p>
-                    <p>{{item.date}}</p>
-                    <p>{{item.fans}} fans interested</p>
-                </div>
-                <div class="text-center text-xs mt-2">
-                    <p>Listen to Justin Bieber</p>
+                <div class="text-center text-xs mt-2 md:hidden">
                     <div class="mt-3 flex items-center justify-center">
                         <div class="px-2">
                             <button class="bg-red-800 w-40 px-3 md:w-96 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -71,7 +90,7 @@
                 <p class="text-xs">
                     Use Waze to avoid arriving late to the show
                 </p>
-                <button class="mt-3 bg-blue-800 w-full md:w-96 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                <button class="mt-3 bg-blue-800 w-full md:w-full hover:bg-blue-700 text-white py-2 px-4 rounded">
                     Plan Trip in Waze
                 </button>
             </div>
@@ -99,7 +118,6 @@ export default {
 <style>
     .header {
         background-image: url("../../src/assets/JB.png");
-        background: linear-gradient(to top, black);
         background-repeat: no-repeat;
     }
 </style>

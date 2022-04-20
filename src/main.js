@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import { store } from './_store';
 import './index.css'
+import 'tw-elements';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faBell, faComments, faHouse, faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
