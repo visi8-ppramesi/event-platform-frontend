@@ -31,27 +31,42 @@ const routes = [
   {
     path: '/feed',
     name: 'feed',
-    component: FeedView
+    component: FeedView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/alert',
     name: 'Alert',
-    component: AlertView
+    component: AlertView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/profile',
     name: 'profile',
-    component: ProfileView
+    component: ProfileView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    meta: {
+      requiresLoggedOut: true
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: RegisterView
+    component: RegisterView,
+    meta: {
+      requiresLoggedOut: true
+    }
   },
   {
     path: '/artist/detail',
@@ -76,16 +91,22 @@ const router = new VueRouter({
   routes
 });
 
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['/login', '/register'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem('user');
+router.beforeEach((to, from, next) => {
+  // const publicPages = ['/login', '/register'];
+  // const authRequired = !publicPages.includes(to.path);
+  // const loggedIn = localStorage.getItem('user');
+  const loggedIn = localStorage.getItem('uid')
+  console.log(loggedIn)
 
-//   if (authRequired && !loggedIn) {
-//     return next('/login');
-//   }
+  if(to.meta.requiresLoggedOut && !!loggedIn){
+    return next('/')
+  }
 
-//   next();
-// });
+  if (to.meta.requiresAuth && !loggedIn) {
+    return next('/login');
+  }
+
+  next();
+});
 
 export default router

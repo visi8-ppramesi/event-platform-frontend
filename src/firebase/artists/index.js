@@ -2,8 +2,7 @@ import firebase from '../firebase.js'
 import { 
     doc, 
     query, 
-    startAt, 
-    endAt, 
+    startAfter, 
     collection, 
     getDocs, 
     getDoc, 
@@ -11,7 +10,9 @@ import {
     runTransaction, 
     arrayRemove, 
     arrayUnion, 
-    increment 
+    increment, 
+    orderBy,
+    limit,
 } from "firebase/firestore";  
 import { validatePostData } from '@/_services/validators.js';
 
@@ -44,9 +45,14 @@ export default class{
         return await Promise.allSettled(promises)
     }
 
-    static async getArtists(startAtParam = 0, endAtParam = 10, queries = []){
+    static async getArtists(limitParam = 10, startAfterParam = null){
         const artistRef = collection(firebase.db, 'artists')
-        const q = query(artistRef, startAt(startAtParam), endAt(endAtParam), ...queries)
+        let q;
+        if(startAfterParam){
+            q = query(artistRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam))
+        }else{
+            q = query(artistRef, orderBy('name'), limit(limitParam))
+        }
         return await getDocs(q)
     }
 

@@ -9,8 +9,8 @@ import { faUser, faBell, faComments, faHouse, faLocationArrow } from '@fortaweso
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { backend } from './_helpers';
-backend();
+// import { backend } from './_helpers';
+// backend();
 
 Vue.config.productionTip = false
 library.add(faUser, faBell, faComments, faHouse, faLocationArrow)
