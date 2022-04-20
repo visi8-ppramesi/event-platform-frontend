@@ -4,15 +4,15 @@
             <h3 class="text-2xl text-center">Register new account</h3>
             <div class="py-4 mt-4">
                 <div>
-                    <label class="block" for="firstName">First Name</label>
-                    <input style="border-color: #00b4b3;" type="text" v-model="user.data.firstName" placeholder="Firstname" name="firstName" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <label class="block" for="first_name">First Name</label>
+                    <input style="border-color: #00b4b3;" type="text" v-model="user.data.first_name" placeholder="Firstname" name="first_name" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
                     <span v-show="invalidFirstname" class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                         Invalid first name
                     </span>
                 </div>
                 <div class="pt-3">
-                    <label class="block" for="lastName">Last Name</label>
-                    <input style="border-color: #00b4b3;" type="text" v-model="user.data.lastName" placeholder="Lastname" name="lastName" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <label class="block" for="last_name">Last Name</label>
+                    <input style="border-color: #00b4b3;" type="text" v-model="user.data.last_name" placeholder="Lastname" name="last_name" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
                     <span v-show="invalidLastname" class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                         Invalid last name
                     </span>
@@ -52,8 +52,8 @@ export default {
         return {
            user: {
                 data: {
-                    firstName: '',
-                    lastName: '',
+                    first_name: '',
+                    last_name: '',
                     profile_picture: '',
                     default_location: new GeoPoint(0, 0),
                     following: [],
@@ -77,7 +77,7 @@ export default {
             this.submitted = true;
             const submitData = Object.assign({}, this.user)
             submitData.errorFunc = () => {
-                
+
             }
             this.register(submitData)
             // this.$validator.validate().then(valid => {
