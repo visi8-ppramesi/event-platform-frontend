@@ -142,13 +142,20 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+// import { Artists, utils } from './firebase/index.js'
 import SideBar from "./components/menu/SideBar.vue";
 import { mapState, mapActions } from 'vuex'
+// import { Artists } from './firebase';
 export default {
   name: "App",
   components: {
     // HelloWorld
     SideBar,
+  },
+  data(){
+    return {
+
+    }
   },
   computed:{
     ...mapState("user", ['user'])
@@ -158,6 +165,15 @@ export default {
   },
   created() {
     this.authAction()
+    // Artists.getArtistsWithDataUrl(10).then(console.log)
+    // Artists.getArtists().then((docs) => {
+    //   docs.docs.forEach((doc) => {
+    //     const data = doc.data()
+    //     utils.getDataUrlFromStorage(data.profile_picture).then(v => {
+    //       console.log(v)
+    //     })
+    //   })
+    // })
   },
 };
 </script>

@@ -14,7 +14,9 @@ import {
     orderBy,
     limit,
 } from "firebase/firestore";  
+// import { getBlob, ref } from 'firebase/storage';
 import { validatePostData } from '@/_services/validators.js';
+import utils from '../utils/index.js'
 
 export default class{
     static async createPost(id, text, images = []){
@@ -33,8 +35,8 @@ export default class{
         const promises = []
 
         const artistsRef = doc(firebase.db, 'artists', id)
-        const doc = getDoc(artistsRef)
-        promises.push(doc)
+        const docResult = getDoc(artistsRef)
+        promises.push(docResult)
 
         if(withPosts){
             const postsRef = collection(firebase.db, 'artists', id, 'posts')
@@ -45,15 +47,59 @@ export default class{
         return await Promise.allSettled(promises)
     }
 
-    static async getArtists(limitParam = 10, startAfterParam = null){
+    static async getArtists(limitParam = 10, startAfterParam = null, queries = []){
         const artistRef = collection(firebase.db, 'artists')
         let q;
         if(startAfterParam){
-            q = query(artistRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam))
+            q = query(artistRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam), ...queries)
         }else{
-            q = query(artistRef, orderBy('name'), limit(limitParam))
+            q = query(artistRef, orderBy('name'), limit(limitParam), ...queries)
         }
-        return await getDocs(q)
+        const snap = await getDocs(q)
+        const docs = Object.values(snap.docs)
+        const artists = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            data.ref = docs[i].ref
+            artists.push(data)
+        }
+        return artists
+    }
+
+    static async getArtistsWithProfileDataUrl(limitParam = 10, startAfterParam = null, queries = []){
+        const artistRef = collection(firebase.db, 'artists')
+        let q;
+        if(startAfterParam){
+            q = query(artistRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam), ...queries)
+        }else{
+            q = query(artistRef, orderBy('name'), limit(limitParam), ...queries)
+        }
+        const snap = await getDocs(q)
+        const docs = Object.values(snap.docs)
+        const artists = []
+        const promises = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            promises.push(utils.getDataUrlFromStorage(data.profile_picture).then((image) => {
+                data.profile_picture = image
+                data.doc = docs[i]
+                artists.push(data)
+            }))
+            // const blob = await getBlob(ref(firebase.storage, data.profile_picture));//getBlob(data.profile_picture)
+            // const newProfilePicture = await new Promise((resolve, reject) => {
+            //     var a = new FileReader();
+            //     a.onload = function(e) {
+            //         resolve(e.target.result);
+            //     }
+            //     a.onerror = function(e){
+            //         reject(e);
+            //     }
+            //     a.readAsDataURL(blob);
+            // })
+            // data.profile_picture = newProfilePicture
+        }
+        await Promise.allSettled(promises)
+        return artists
     }
 
     static async toggleArtistFollow(artistId){

@@ -16,6 +16,7 @@ import {
     limit
 } from "firebase/firestore";  
 import { validatePostData } from '@/_services/validators.js';
+import utils from '../utils/index.js'
 
 export default class{
     static async createPost(id, text, images = []){
@@ -34,8 +35,8 @@ export default class{
         const promises = []
 
         const eventRef = doc(firebase.db, 'events', id)
-        const doc = getDoc(eventRef)
-        promises.push(doc)
+        const docResult = getDoc(eventRef)
+        promises.push(docResult)
 
         if(withPosts){
             const postsRef = collection(firebase.db, 'events', id, 'posts')
@@ -54,7 +55,51 @@ export default class{
         }else{
             q = query(eventRef, orderBy('name'), limit(limitParam))
         }
-        return await getDocs(q)
+        const snap = await getDocs(q)
+        const docs = Object.values(snap.docs)
+        const events = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            data.ref = docs[i].ref
+            events.push(data)
+        }
+        return events
+    }
+
+    static async getEventsWithCoverDataUrl(limitParam = 10, startAfterParam = null, queries = []){
+        const eventRef = collection(firebase.db, 'events')
+        let q;
+        if(startAfterParam){
+            q = query(eventRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam), ...queries)
+        }else{
+            q = query(eventRef, orderBy('name'), limit(limitParam), ...queries)
+        }
+        const snap = await getDocs(q)
+        const docs = Object.values(snap.docs)
+        const events = []
+        const promises = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            promises.push(utils.getDataUrlFromStorage(data.cover_picture).then((image) => {
+                data.cover_picture = image
+                data.doc = docs[i]
+                events.push(data)
+            }))
+            // const blob = await getBlob(ref(firebase.storage, data.cover_picture));//getBlob(data.cover_picture)
+            // const newProfilePicture = await new Promise((resolve, reject) => {
+            //     var a = new FileReader();
+            //     a.onload = function(e) {
+            //         resolve(e.target.result);
+            //     }
+            //     a.onerror = function(e){
+            //         reject(e);
+            //     }
+            //     a.readAsDataURL(blob);
+            // })
+            // data.cover_picture = newProfilePicture
+        }
+        await Promise.allSettled(promises)
+        return events
     }
 
     static async toggleEventSubscribe(eventId){

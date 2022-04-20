@@ -4,11 +4,11 @@
             <div class="relative h-full w-48">
                 <div class="pr-3">
                     <img class="h-full w-full" :src="item.image">
-                    <p class="text-center pt-24 font-bold absolute inset-0">{{item.title}}</p>
+                    <p class="text-center pt-24 font-bold absolute inset-0">{{item.name}}</p>
                     <p class="text-center pt-28 font-bold absolute inset-0">{{item.subs}} followers</p>
                     <div>
                         <button class="absolute inset-x-0 bottom-0 bg-red-800 w-32 hover:bg-blue-700 text-white text-xs font-bold mx-7 my-2 py-2 px-4 rounded">
-                            View All
+                            View
                         </button>
                     </div>
                 </div>
