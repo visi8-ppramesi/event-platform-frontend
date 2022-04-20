@@ -1,10 +1,18 @@
 <template>
-  <div id="app">
-    <SideBar>
-      <ul class="sidebar-panel-nav text-lg divide-y-2">
-        <div>
-          <li class="text-white font-bold px-5 pt-3 pb-5 text-2xl">
-            Visi 8 Concert
+  <div id="app" style="background-color: #544f4f" class="h-full">
+   <SideBar>
+     <ul class="sidebar-panel-nav text-lg divide-y-2">
+      <div>
+        <li class="text-white font-bold px-5 pt-3 pb-5 text-2xl">Visi 8 Concert</li>
+      </div>
+      
+      <div class="pt-3 text-white">
+        <div class="py-2">
+          <li class="flex h-10 hover:bg-white hover:text-black rounded-md items-center">
+            <div class="px-3">
+              <font-awesome-icon icon="fa-solid fa-house" />
+              <a class="px-7" href="/">Home</a>
+            </div>
           </li>
         </div>
 
@@ -122,9 +130,12 @@
             </li>
           </div>
         </div>
-      </ul>
-    </SideBar>
-    <router-view />
+      </div>
+     </ul>
+   </SideBar>
+    <div class="md:mx-10 md:h-full">
+      <router-view />
+    </div>
   </div>
 </template>
 

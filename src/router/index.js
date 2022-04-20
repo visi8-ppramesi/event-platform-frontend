@@ -7,7 +7,9 @@ import AlertView from '../views/AlertView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
-// import { User } from '../firebase/index.js'
+import ArtistDetail from '../views/ArtistDetail.vue'
+import EventDetail from '../views/EventDetail.vue'
+import SettingsView from '../views/SettingsView.vue'
 
 Vue.use(VueRouter)
 
@@ -65,6 +67,21 @@ const routes = [
     meta: {
       requiresLoggedOut: true
     }
+  },
+  {
+    path: '/artist/detail',
+    name: 'artist',
+    component: ArtistDetail
+  },
+  {
+    path: '/event/detail',
+    name: 'event',
+    component: EventDetail
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SettingsView
   },
 ]
 

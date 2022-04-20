@@ -1,5 +1,5 @@
 <template>
-  <div class="home h-full w-full md:h-screen text-white">
+  <div style="background-color: #202424" class="h-full w-full md:h-screen text-white">
     <NavBar class="py-2 md:text-2xl" title="Explore View" />
     <div class="p-3">
         <div class="pt-2 relative mx-auto text-gray-600">
@@ -61,7 +61,4 @@ export default {
 </script>
 
 <style>
-  .home{
-    background-color: #202424; 
-  }
 </style>
