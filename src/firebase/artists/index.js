@@ -43,8 +43,15 @@ export default class{
             const postsDoc = getDocs(postsRef)
             promises.push(postsDoc)
         }
+        let artist
+        await Promise.allSettled(promises).then((res) => {
+            artist = res[0].data()
+            if(withPosts){
+                artist.posts = res[1].data()
+            }
+        })
 
-        return await Promise.allSettled(promises)
+        return artist
     }
 
     static async getArtists(limitParam = 10, startAfterParam = null, queries = []){

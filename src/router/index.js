@@ -10,6 +10,7 @@ import RegisterView from '../views/RegisterView.vue'
 import ArtistDetail from '../views/ArtistDetail.vue'
 import EventDetail from '../views/EventDetail.vue'
 import SettingsView from '../views/SettingsView.vue'
+import NotFoundView from '../views/404View.vue'
 
 Vue.use(VueRouter)
 
@@ -69,12 +70,12 @@ const routes = [
     }
   },
   {
-    path: '/artist/detail',
+    path: '/artist/:id',
     name: 'artist',
     component: ArtistDetail
   },
   {
-    path: '/event/detail',
+    path: '/event/:id',
     name: 'event',
     component: EventDetail
   },
@@ -83,6 +84,11 @@ const routes = [
     name: 'settings',
     component: SettingsView
   },
+  {
+    path: '*',
+    name: '404',
+    component: NotFoundView,
+  }
 ]
 
 const router = new VueRouter({

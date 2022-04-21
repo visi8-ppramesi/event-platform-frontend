@@ -44,7 +44,15 @@ export default class{
             promises.push(postsDoc)
         }
 
-        return await Promise.allSettled(promises)
+        let event
+        await Promise.allSettled(promises).then((res) => {
+            event = res[0].data()
+            if(withPosts){
+                event.posts = res[1].data()
+            }
+        })
+
+        return event
     }
 
     static async getEvents(limitParam = 10, startAfterParam = null){
