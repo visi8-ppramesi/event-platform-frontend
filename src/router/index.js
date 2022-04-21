@@ -7,9 +7,10 @@ import AlertView from '../views/AlertView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
-import ArtistDetail from '../views/ArtistDetail.vue'
 import EventDetail from '../views/EventDetail.vue'
+import FestivalDetail from '../views/FestivalDetail.vue'
 import SettingsView from '../views/SettingsView.vue'
+import ArtistDetail from '../views/ArtistDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -69,14 +70,19 @@ const routes = [
     }
   },
   {
+    path: '/event/detail',
+    name: 'event',
+    component: EventDetail
+  },
+  {
     path: '/artist/detail',
     name: 'artist',
     component: ArtistDetail
   },
   {
-    path: '/event/detail',
-    name: 'event',
-    component: EventDetail
+    path: '/festival/detail',
+    name: 'festival',
+    component: FestivalDetail
   },
   {
     path: '/settings',

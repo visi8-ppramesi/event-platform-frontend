@@ -3,7 +3,7 @@
         <div class="pt-3" v-for="item in content" :key="item.index">
             <div v-if="size === 'small' ">
                 <div class="h-full w-36 pr-2">
-                    <router-link to="/artist/detail">
+                    <router-link to="/event/detail">
                          <img class="h-36 w-36 rounded-md" :src="item.image">
                         <div class="text-xs pt-2">
                             <p>{{item.name}}</p>
@@ -16,7 +16,7 @@
 
             <div  v-if="size === 'medium' ">
                 <div class="h-full w-64 pr-3">
-                    <router-link to="/event/detail">
+                    <router-link to="/festival/detail">
                         <img class="object-cover h-40 w-full rounded-md" :src="item.image">
                         <div class="text-xs pt-2">
                             <p>{{item.name}}</p>
@@ -26,7 +26,7 @@
                     </router-link>
                 </div>
             </div>
-
+            
             <!-- <div v-if="size === 'details' ">
                 <div class="relative h-full w-40 pr-3">
                     <img class="rounded" :src="item.image" />

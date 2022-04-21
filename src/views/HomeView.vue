@@ -9,7 +9,7 @@
       >
         <div class="carousel-inner relative w-full h-full overflow-hidden">
           <div class="carousel-item active relative float-left w-full">
-            <router-link to="/artist/detail">
+            <router-link to="/event/detail">
               <img
                 :src="jb"
                 class="block w-full h-64 object-cover"
@@ -18,7 +18,7 @@
             </router-link>
           </div>
           <div class="carousel-item relative float-left w-full">
-            <router-link to="/artist/detail">
+            <router-link to="/event/detail">
               <img
                 :src="music"
                 class="block w-full h-64 object-cover"
@@ -27,7 +27,7 @@
             </router-link>
           </div>
           <div class="carousel-item relative float-left w-full">
-            <router-link to="/artist/detail">
+            <router-link to="/event/detail">
               <img
                 :src="jb"
                 class="block w-full h-64 object-cover"
@@ -36,7 +36,7 @@
             </router-link>
           </div>
           <div class="carousel-item relative float-left w-full">
-            <router-link to="/artist/detail">
+            <router-link to="/event/detail">
               <img
                 :src="music"
                 class="block w-full h-64 object-cover"
