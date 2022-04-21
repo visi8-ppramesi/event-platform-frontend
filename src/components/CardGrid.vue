@@ -8,23 +8,27 @@
         <div class="" v-for="item in content" :key="item.index">
             <div v-if="type === 'discover' ">
                 <div class="relative">
-                    <img :src="item.image" />
-                    <div class="mx-1 my-1 absolute bottom-0 left-0 text-xs pt-2">
-                        <p>{{item.name}}</p>
-                        <p>{{item.place}}</p>
-                        <p>{{item.time}}</p>
-                    </div>
+                    <router-link :to="'/' + linkTo + '/' + item.id">
+                        <img :src="item.image" />
+                        <div class="mx-1 my-1 absolute bottom-0 left-0 text-xs pt-2">
+                            <p>{{item.name}}</p>
+                            <p>{{item.place}}</p>
+                            <p>{{item.time}}</p>
+                        </div>
+                    </router-link>
                 </div>
             </div>
 
             <div v-if="type === 'explore' ">
                 <div class="relative">
-                    <img :src="item.image" />
-                    <div class="px-3 text-center pt-16 font-bold absolute inset-0">
-                        <p>{{item.name}}</p>
-                        <p>{{item.place}}</p>
-                        <p>{{item.time}}</p>
-                    </div>
+                    <router-link :to="'/' + linkTo + '/' + item.id">
+                        <img :src="item.image" />
+                        <div class="px-3 text-center pt-16 font-bold absolute inset-0">
+                            <p>{{item.name}}</p>
+                            <p>{{item.place}}</p>
+                            <p>{{item.time}}</p>
+                        </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -43,7 +47,7 @@ export default {
         place: String,
         time: String,
         type: String,
-
+        linkTo: String
     },
     data(){
         return {

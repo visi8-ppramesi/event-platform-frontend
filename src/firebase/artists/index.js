@@ -45,9 +45,10 @@ export default class{
         }
         let artist
         await Promise.allSettled(promises).then((res) => {
-            artist = res[0].data()
+            artist = res[0].value.data()
+            artist.id = res[0].value.id
             if(withPosts){
-                artist.posts = res[1].data()
+                artist.posts = utils.parseDocs(res[1].value.data())
             }
         })
 
@@ -63,14 +64,16 @@ export default class{
             q = query(artistRef, orderBy('name'), limit(limitParam), ...queries)
         }
         const snap = await getDocs(q)
-        const docs = Object.values(snap.docs)
-        const artists = []
-        for(let i = 0; i < docs.length; i++){
-            const data = docs[i].data()
-            data.ref = docs[i].ref
-            artists.push(data)
-        }
-        return artists
+        // const docs = Object.values(snap.docs)
+        // const artists = []
+        // for(let i = 0; i < docs.length; i++){
+        //     const data = docs[i].data()
+        //     data.ref = docs[i].ref
+        //     data.id = docs[i].id
+        //     data.test = 'asdfasdfasdf'
+        //     artists.push(data)
+        // }
+        return utils.parseDocs(snap.docs)
     }
 
     static async getArtistsWithProfileDataUrl(limitParam = 10, startAfterParam = null, queries = []){
@@ -90,6 +93,7 @@ export default class{
             promises.push(utils.getDataUrlFromStorage(data.profile_picture).then((image) => {
                 data.profile_picture = image
                 data.doc = docs[i]
+                data.id = docs[i].id
                 artists.push(data)
             }))
             // const blob = await getBlob(ref(firebase.storage, data.profile_picture));//getBlob(data.profile_picture)

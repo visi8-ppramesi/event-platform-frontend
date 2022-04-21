@@ -110,6 +110,7 @@
         size="small"
         @loadMore="recomLoadMore"
         :showLoadMore="loadMore.recom"
+        linkTo="event"
       />
     </div>
 
@@ -123,6 +124,7 @@
         size="medium"
         @loadMore="upcomingLoadMore"
         :showLoadMore="loadMore.upcoming"
+        linkTo="event"
       />
     </div>
 
@@ -130,7 +132,7 @@
       <p class="text-l md:text-2xl">Whats hot in your area</p>
       <p class="text-xs">Dont miss the shows everyones talking about</p>
 
-      <card-grid ref="hotGrid" :content="hot" type="discover" />
+      <card-grid ref="hotGrid" :content="hot" type="discover" linkTo="event" />
 
       <div class="flex items-center justify-center pt-5 w-full">
         <button
@@ -155,14 +157,32 @@
       <p class="text-l md:text-2xl">Get ready for the weekend</p>
       <p class="text-xs">find something to look forward u</p>
 
-      <div class="h-32"></div>
+      <card-grid ref="futureGrid" :content="future" type="discover" linkTo="event" />
+
+      <div class="flex items-center justify-center pt-5 w-full">
+        <button
+          class="
+            bg-red-800
+            w-full
+            md:w-full
+            hover:bg-blue-700
+            text-white
+            font-bold
+            py-2
+            px-4
+            rounded
+          "
+        >
+          View All
+        </button>
+      </div>
     </div>
 
     <div class="p-3">
       <p class="text-l md:text-2xl">Trending artists</p>
       <p class="text-xs">These artists are topping the charts this week</p>
 
-      <trending-slider :content="trending" />
+      <trending-slider ref="trendingSlider" :content="trending" linkTo="artist" />
     </div>
   </div>
 </template>
@@ -190,6 +210,7 @@ export default {
       upcoming: [],
       hot: [],
       trending: [],
+      future: [],
       jb: require("../assets/land.jpeg"),
       music: require("../assets/tes.jpg"),
       test: [],
@@ -197,11 +218,13 @@ export default {
         recom: null,
         upcoming: null,
         trending: null,
+        future: null,
       },
       loadMore: {
         recom: false,
         upcoming: false,
         trending: false,
+        future: null,
       },
     };
   },
@@ -216,14 +239,31 @@ export default {
     this.recomLoadMore();
     this.trendingLoadMore();
     this.hotLoad();
+    this.futureLoad();
   },
   methods: {
+    futureLoad() {
+      Events.getEventsWithCoverDataUrl(settings.hotGridSliderCount).then(
+        (events) => {
+          this.$refs.futureGrid.hideSpinner();
+          events.forEach((event) => {
+            this.future.push({
+              id: event.id,
+              image: event.cover_picture,
+              name: event.name,
+              location: "place place place",
+            });
+          });
+        }
+      );
+    },
     hotLoad() {
       Events.getEventsWithCoverDataUrl(settings.horizontalSliderCount).then(
         (events) => {
           this.$refs.hotGrid.hideSpinner();
           events.forEach((event) => {
             this.hot.push({
+              id: event.id,
               image: event.cover_picture,
               name: event.name,
               location: "place place place",
@@ -243,6 +283,7 @@ export default {
         this.lastRefs.trending = artists[artists.length - 1].doc;
         artists.forEach((artist) => {
           this.trending.push({
+            id: artist.id,
             image: artist.profile_picture,
             name: artist.name,
             subs: artist.fans,
@@ -263,6 +304,7 @@ export default {
         this.lastRefs.upcoming = events[events.length - 1].doc;
         events.forEach((event) => {
           this.upcoming.push({
+            id: event.id,
             image: event.cover_picture,
             name: event.name,
             location: "place place place",
@@ -282,6 +324,7 @@ export default {
         this.lastRefs.recom = events[events.length - 1].doc;
         events.forEach((event) => {
           this.recom.push({
+            id: event.id,
             image: event.cover_picture,
             name: event.name,
             location: "place place place",
