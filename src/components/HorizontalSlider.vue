@@ -4,7 +4,7 @@
             <div v-if="size === 'small' ">
                 <div class="h-full w-36 pr-2">
                     <router-link :to="'/' + linkTo + '/' + item.id">
-                         <img class="h-36 w-36 rounded-md" :src="item.image">
+                        <img class="h-36 w-36 rounded-md" :src="item.image">
                         <div class="text-xs pt-2">
                             <p>{{item.name}}</p>
                             <p>{{item.location}}</p>
@@ -26,7 +26,7 @@
                     </router-link>
                 </div>
             </div>
-
+            
             <!-- <div v-if="size === 'details' ">
                 <div class="relative h-full w-40 pr-3">
                     <img class="rounded" :src="item.image" />

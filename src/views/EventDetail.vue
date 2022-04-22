@@ -70,11 +70,13 @@
             </div>
 
             <div  class="font-bold px-5 mt-7">
-                <p>Event Lineup</p>
-                <div class="px-3 pt-3">
-                    <img class="h-16 w-16" :src="jb" />
-                    <p class="text-xs py-2">Justin Bieber</p>
-                </div>
+                <router-link to="/artist/detail">
+                    <p>Event Lineup</p>
+                    <div class="px-3 pt-3">
+                        <img class="h-16 w-16" :src="jb" />
+                        <p class="text-xs py-2">Justin Bieber</p>
+                    </div>
+                </router-link>
             </div>
 
             <div class="px-5 mt-7">
