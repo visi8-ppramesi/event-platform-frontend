@@ -36,6 +36,7 @@ export default class{
 
         const eventRef = doc(firebase.db, 'events', id)
         const docResult = getDoc(eventRef)
+        console.log(await docResult)
         promises.push(docResult)
 
         if(withPosts){
@@ -44,7 +45,17 @@ export default class{
             promises.push(postsDoc)
         }
 
-        return await Promise.allSettled(promises)
+        let event
+        await Promise.allSettled(promises).then((res) => {
+            console.log(res[0].value)
+            event = res[0].value.data()
+            event.id = res[0].value.id
+            if(withPosts){
+                event.posts = utils.parseDocs(res[1].value.docs)
+            }
+        })
+
+        return event
     }
 
     static async getEvents(limitParam = 10, startAfterParam = null){
@@ -56,14 +67,7 @@ export default class{
             q = query(eventRef, orderBy('name'), limit(limitParam))
         }
         const snap = await getDocs(q)
-        const docs = Object.values(snap.docs)
-        const events = []
-        for(let i = 0; i < docs.length; i++){
-            const data = docs[i].data()
-            data.ref = docs[i].ref
-            events.push(data)
-        }
-        return events
+        return utils.parseDocs(snap.docs)
     }
 
     static async getEventsWithCoverDataUrl(limitParam = 10, startAfterParam = null, queries = []){
@@ -83,6 +87,7 @@ export default class{
             promises.push(utils.getDataUrlFromStorage(data.cover_picture).then((image) => {
                 data.cover_picture = image
                 data.doc = docs[i]
+                data.id = docs[i].id
                 events.push(data)
             }))
             // const blob = await getBlob(ref(firebase.storage, data.cover_picture));//getBlob(data.cover_picture)

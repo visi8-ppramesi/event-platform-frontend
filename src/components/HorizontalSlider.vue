@@ -3,8 +3,8 @@
         <div class="pt-3" v-for="item in content" :key="item.index">
             <div v-if="size === 'small' ">
                 <div class="h-full w-36 pr-2">
-                    <router-link to="/event/detail">
-                         <img class="h-36 w-36 rounded-md" :src="item.image">
+                    <router-link :to="'/' + linkTo + '/' + item.id">
+                        <img class="h-36 w-36 rounded-md" :src="item.image">
                         <div class="text-xs pt-2">
                             <p>{{item.name}}</p>
                             <p>{{item.location}}</p>
@@ -16,7 +16,7 @@
 
             <div  v-if="size === 'medium' ">
                 <div class="h-full w-64 pr-3">
-                    <router-link to="/festival/detail">
+                    <router-link :to="'/' + linkTo + '/' + item.id">
                         <img class="object-cover h-40 w-full rounded-md" :src="item.image">
                         <div class="text-xs pt-2">
                             <p>{{item.name}}</p>
@@ -66,6 +66,7 @@ export default {
         location: String,
         date: String,
         size: String,
+        linkTo: String,
         showLoadMore: {
             type: Boolean,
             default: true

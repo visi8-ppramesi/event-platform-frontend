@@ -11,6 +11,7 @@ import EventDetail from '../views/EventDetail.vue'
 import FestivalDetail from '../views/FestivalDetail.vue'
 import SettingsView from '../views/SettingsView.vue'
 import ArtistDetail from '../views/ArtistDetail.vue'
+import NotFoundView from '../views/404View.vue'
 
 Vue.use(VueRouter)
 
@@ -70,12 +71,7 @@ const routes = [
     }
   },
   {
-    path: '/event/detail',
-    name: 'event',
-    component: EventDetail
-  },
-  {
-    path: '/artist/detail',
+    path: '/artist/:id',
     name: 'artist',
     component: ArtistDetail
   },
@@ -85,10 +81,20 @@ const routes = [
     component: FestivalDetail
   },
   {
+    path: '/event/:id',
+    name: 'event',
+    component: EventDetail
+  },
+  {
     path: '/settings',
     name: 'settings',
     component: SettingsView
   },
+  {
+    path: '*',
+    name: '404',
+    component: NotFoundView,
+  }
 ]
 
 const router = new VueRouter({

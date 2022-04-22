@@ -237,7 +237,6 @@
 </template>
 
 <script>
-import jb from '../assets/JB.png'
 export default {
   name: 'ArtistDetail',
   components: {
@@ -296,4 +295,5 @@ export default {
     .scrolling-wrapper::-webkit-scrollbar {
         display: none;
     }
+
 </style>

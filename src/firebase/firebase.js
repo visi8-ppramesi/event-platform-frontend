@@ -7,6 +7,8 @@ import {
   setPersistence
 } from "firebase/auth";
 import { getStorage } from 'firebase/storage'
+import { getPerformance } from "firebase/performance";
+
 // import dotenv from 'dotenv';
 
 // const env = dotenv.config().parsed;
@@ -26,7 +28,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const storage = getStorage(app)
+const performance = getPerformance(app)
 
 setPersistence(auth, browserLocalPersistence)
 
-export default {app, db, auth, storage, analytics};
+export default {app, db, auth, storage, analytics, performance};

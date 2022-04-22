@@ -98,22 +98,25 @@
             </div>
                 
         </div>
-
     </div>
 </template>
 
 <script>
+import { Events } from '@/firebase';
 import jb from '../assets/JB.png'
 export default {
-  name: 'EventArtist',
-  data(){
+    name: 'ArtistDetail',
+    data(){
         return {
             datas: [
                 {title: 'Justin Bieber', place: 'GBK Madya stadium', date: 'Wed, Nov 2', time: '20:00', fans: '51', alamat: 'Jl. Asia Afrika, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 10270', image: jb},
             ],
             jb: require('../assets/JB.png'),
         };
-  },
+    },
+    created(){
+        Events.getEvent(this.$route.params.id, true).then(console.log)
+    },
 }
 </script>
 
