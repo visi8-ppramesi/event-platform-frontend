@@ -28,9 +28,11 @@ export default {
         title: String,
         place: String,
         time: String,
-
     },
-    
+    methods: {
+        hideSpinner(){
+        },
+    }
 }
 </script>
 

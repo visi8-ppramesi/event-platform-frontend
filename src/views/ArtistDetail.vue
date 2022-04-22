@@ -244,7 +244,7 @@ export default {
   data(){
         return {
             datas: [
-                {title: 'Justin Bieber', place: 'GBK Madya stadium', date: 'Wed, Nov 2', show: '97', fans: '4.889.762', alamat: 'Jl. Asia Afrika, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 10270', image: jb},
+                {title: 'Justin Bieber', place: 'GBK Madya stadium', date: 'Wed, Nov 2', show: '97', fans: '4.889.762', alamat: 'Jl. Asia Afrika, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 10270', image: require('../assets/JB.png')},
             ],
             datas2: [
                 {num: '02', day: 'WED', month: 'NOV', place: 'GBK Madya Stadium', alamat: 'Kota Administrasi Jakarta Selatan, Indonesia'},
@@ -266,11 +266,11 @@ export default {
                 
             ],
             artist: [
-                {artist: 'Justin Bieber', followers: '4', image: jb},
-                {artist: 'Justin Bieber', followers: '4', image: jb},
-                {artist: 'Justin Bieber', followers: '4', image: jb},
-                {artist: 'Justin Bieber', followers: '4', image: jb},
-                {artist: 'Justin Bieber', followers: '4', image: jb},                
+                {artist: 'Justin Bieber', followers: '4', image: require('../assets/JB.png')},
+                {artist: 'Justin Bieber', followers: '4', image: require('../assets/JB.png')},
+                {artist: 'Justin Bieber', followers: '4', image: require('../assets/JB.png')},
+                {artist: 'Justin Bieber', followers: '4', image: require('../assets/JB.png')},
+                {artist: 'Justin Bieber', followers: '4', image: require('../assets/JB.png')},                
             ],
             jb: require('../assets/JB.png'),
         };

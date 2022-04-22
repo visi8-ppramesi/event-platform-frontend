@@ -5,7 +5,7 @@ import { store } from './_store';
 import './index.css'
 import 'tw-elements';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUser, faBell, faComments, faHouse, faLocationArrow, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faBell, faComments, faHouse, faLocationArrow, faAngleRight, faBuilding, faCalendar } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // backend();
 
 Vue.config.productionTip = false
-library.add(faUser, faBell, faComments, faHouse, faLocationArrow, faAngleRight)
+library.add(faUser, faBell, faComments, faHouse, faLocationArrow, faAngleRight, faBuilding, faCalendar)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 new Vue({

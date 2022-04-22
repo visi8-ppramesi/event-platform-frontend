@@ -213,7 +213,6 @@ export default {
       future: [],
       jb: require("../assets/land.jpeg"),
       music: require("../assets/tes.jpg"),
-      test: [],
       lastRefs: {
         recom: null,
         upcoming: null,
@@ -226,6 +225,7 @@ export default {
         trending: false,
         future: null,
       },
+      test: [],
     };
   },
   computed: {
@@ -240,97 +240,216 @@ export default {
     this.trendingLoadMore();
     this.hotLoad();
     this.futureLoad();
+
   },
   methods: {
-    futureLoad() {
-      Events.getEventsWithCoverDataUrl(settings.hotGridSliderCount).then(
-        (events) => {
-          this.$refs.futureGrid.hideSpinner();
-          events.forEach((event) => {
-            this.future.push({
-              id: event.id,
-              image: event.cover_picture,
-              name: event.name,
-              location: "place place place",
-            });
-          });
-        }
-      );
+    async gridLoader(
+      gridCount,
+      fields,
+      generatorObject,
+      varName,
+      gridRef
+    ){
+      const generator = generatorObject(gridCount)
+      for await(const data of generator){
+        const tempObj = {}
+        Object.keys(fields).forEach((field) => {
+          if(typeof fields[field] == 'function'){
+            tempObj[field] = fields[field](data)
+          }else{
+            tempObj[field] = data[fields[field]]
+          }
+        })
+        this[varName].push(tempObj)
+      }
+      gridRef.hideSpinner()
     },
-    hotLoad() {
-      Events.getEventsWithCoverDataUrl(settings.horizontalSliderCount).then(
-        (events) => {
-          this.$refs.hotGrid.hideSpinner();
-          events.forEach((event) => {
-            this.hot.push({
-              id: event.id,
-              image: event.cover_picture,
-              name: event.name,
-              location: "place place place",
-            });
-          });
-        }
-      );
+    async futureLoad() {
+      this.gridLoader(
+        settings.hotGridSliderCount,
+        {
+          id: 'id',
+          image: 'cover_picture',
+          name: 'name',
+          location: (data) => { return data.location_data.name }
+        },
+        Events.generatorEventsWithCoverDataUrl,
+        'future',
+        this.$refs.futureGrid
+      )
+
+      // Events.getEventsWithCoverDataUrl(settings.hotGridSliderCount).then(
+      //   (events) => {
+      //     this.$refs.futureGrid.hideSpinner();
+      //     events.forEach((event) => {
+      //       this.future.push({
+      //         id: event.id,
+      //         image: event.cover_picture,
+      //         name: event.name,
+      //         location: "place place place",
+      //       });
+      //     });
+      //   }
+      // );
     },
-    trendingLoadMore() {
-      this.loadMore.trending = false
-      Artists.getArtistsWithProfileDataUrl(
+    async hotLoad() {
+      this.gridLoader(
+        settings.hotGridSliderCount,
+        {
+          id: 'id',
+          image: 'cover_picture',
+          name: 'name',
+          location: (data) => { return data.location_data.name }
+        },
+        Events.generatorEventsWithCoverDataUrl,
+        'hot',
+        this.$refs.hotGrid
+      )
+
+      // Events.getEventsWithCoverDataUrl(settings.horizontalSliderCount).then(
+      //   (events) => {
+      //     this.$refs.hotGrid.hideSpinner();
+      //     events.forEach((event) => {
+      //       this.hot.push({
+      //         id: event.id,
+      //         image: event.cover_picture,
+      //         name: event.name,
+      //         location: "place place place",
+      //       });
+      //     });
+      //   }
+      // );
+    },
+    async sliderLoader(
+      sliderCount,
+      fields,
+      queries,
+      generatorObject,
+      varName,
+      sliderRef,
+    ){
+      this.loadMore[varName] = false
+      const generator = generatorObject(sliderCount, queries, this.lastRefs[varName])
+      let count = 0
+      let lastOne
+      for await(const data of generator){
+        const tempObj = {}
+        Object.keys(fields).forEach((field) => {
+          if(typeof fields[field] == 'function'){
+            tempObj[field] = fields[field](data)
+          }else{
+            tempObj[field] = data[fields[field]]
+          }
+        })
+        this[varName].push(tempObj)
+        count++
+        lastOne = data
+      }
+      this.loadMore[varName] = 
+        count >= sliderCount
+      this.lastRefs[varName] = lastOne.doc
+      console.log(lastOne.id)
+      sliderRef.hideSpinner()
+    },
+    async trendingLoadMore() {
+      this.sliderLoader(
         settings.horizontalSliderCount,
-        this.lastRefs.trending
-      ).then((artists) => {
-        this.loadMore.trending =
-          artists.length >= settings.horizontalSliderCount;
-        this.lastRefs.trending = artists[artists.length - 1].doc;
-        artists.forEach((artist) => {
-          this.trending.push({
-            id: artist.id,
-            image: artist.profile_picture,
-            name: artist.name,
-            subs: artist.fans,
-          });
-        });
-      });
+        {
+          id: 'id',
+          image: 'profile_picture',
+          name: 'name',
+          subs: 'fans'
+        },
+        [],
+        Artists.generatorArtistsWithCoverDataUrl,
+        'trending',
+        this.$refs.trendingSlider
+      )
+
+      // Artists.getArtistsWithProfileDataUrl(
+      //   settings.horizontalSliderCount,
+      //   this.lastRefs.trending
+      // ).then((artists) => {
+      //   this.loadMore.trending =
+      //     artists.length >= settings.horizontalSliderCount;
+      //   this.lastRefs.trending = artists[artists.length - 1].doc;
+      //   artists.forEach((artist) => {
+      //     this.trending.push({
+      //       id: artist.id,
+      //       image: artist.profile_picture,
+      //       name: artist.name,
+      //       subs: artist.fans,
+      //     });
+      //   });
+      // });
     },
-    upcomingLoadMore() {
-      this.$refs.upcomingSlider.showSpinner();
-      this.loadMore.upcoming = false
-      Events.getEventsWithCoverDataUrl(
+    async upcomingLoadMore() {
+      this.sliderLoader(
         settings.horizontalSliderCount,
-        this.lastRefs.upcoming
-      ).then((events) => {
-        this.$refs.upcomingSlider.hideSpinner();
-        this.loadMore.upcoming =
-          events.length >= settings.horizontalSliderCount;
-        this.lastRefs.upcoming = events[events.length - 1].doc;
-        events.forEach((event) => {
-          this.upcoming.push({
-            id: event.id,
-            image: event.cover_picture,
-            name: event.name,
-            location: "place place place",
-          });
-        });
-      });
+        {
+          id: 'id',
+          image: 'cover_picture',
+          name: 'name',
+          location: (data) => { return data.location_data.name }
+        },
+        [],
+        Events.generatorEventsWithCoverDataUrl,
+        'upcoming',
+        this.$refs.upcomingSlider
+      )
+
+      // Events.getEventsWithCoverDataUrl(
+      //   settings.horizontalSliderCount,
+      //   this.lastRefs.upcoming
+      // ).then((events) => {
+      //   this.$refs.upcomingSlider.hideSpinner();
+      //   this.loadMore.upcoming =
+      //     events.length >= settings.horizontalSliderCount;
+      //   this.lastRefs.upcoming = events[events.length - 1].doc;
+      //   events.forEach((event) => {
+      //     this.upcoming.push({
+      //       id: event.id,
+      //       image: event.cover_picture,
+      //       name: event.name,
+      //       location: "place place place",
+      //     });
+      //   });
+      // });
     },
     recomLoadMore() {
-      this.$refs.recomSlider.showSpinner();
-      this.loadMore.recom = false
-      Events.getEventsWithCoverDataUrl(
+      this.sliderLoader(
         settings.horizontalSliderCount,
-        this.lastRefs.recom
-      ).then((events) => {
-        this.$refs.recomSlider.hideSpinner();
-        this.loadMore.recom = events.length >= settings.horizontalSliderCount;
-        this.lastRefs.recom = events[events.length - 1].doc;
-        events.forEach((event) => {
-          this.recom.push({
-            id: event.id,
-            image: event.cover_picture,
-            name: event.name,
-            location: "place place place",
-          });
-        });
-      });
+        {
+          id: 'id',
+          image: 'cover_picture',
+          name: 'name',
+          location: (data) => { return data.location_data.name }
+        },
+        [],
+        Events.generatorEventsWithCoverDataUrl,
+        'recom',
+        this.$refs.recomSlider
+      )
+
+      // this.$refs.recomSlider.showSpinner();
+      // this.loadMore.recom = false
+      // Events.getEventsWithCoverDataUrl(
+      //   settings.horizontalSliderCount,
+      //   [],
+      //   this.lastRefs.recom
+      // ).then((events) => {
+      //   this.$refs.recomSlider.hideSpinner();
+      //   this.loadMore.recom = events.length >= settings.horizontalSliderCount;
+      //   this.lastRefs.recom = events[events.length - 1].doc;
+      //   events.forEach((event) => {
+      //     this.recom.push({
+      //       id: event.id,
+      //       image: event.cover_picture,
+      //       name: event.name,
+      //       location: "place place place",
+      //     });
+      //   });
+      // });
     },
     // ...mapActions('users', {
     //     getAllUsers: 'getAll',

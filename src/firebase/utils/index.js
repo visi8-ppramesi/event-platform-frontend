@@ -1,5 +1,7 @@
 import firebase from '../firebase.js'
+import { collection, orderBy, startAt, endAt, query, getDocs } from 'firebase/firestore'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
+import geofire from 'geofire-common'
 
 const getBlob = async (gsPath) => {
     return await getStorageBlob(ref(firebase.storage, gsPath))
@@ -43,4 +45,33 @@ const parseDocs = (docs, extraFields = []) => {
     return retVal
 }
 
-export default { getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs }
+const locationQuery = (db, geopointField, coll, center, distance) => {
+    const collRef = collection(db, coll)
+    const bounds = geofire.geohashQueryBounds(center, distance);
+    const promises = [];
+    for (const b of bounds) {
+        promises.push(getDocs(query(collRef, orderBy('geohash'), startAt(b[0]), endAt(b[1]))))
+    }
+
+    return Promise.all(promises).then((snapshots) => {
+        const matchingDocs = [];
+
+        for (const snap of snapshots) {
+            for (const doc of snap.docs) {
+                const [ lat, lng ] = Object.values(doc.get(geopointField).toJSON())
+
+                // We have to filter out a few false positives due to GeoHash
+                // accuracy, but most will match
+                const distanceInKm = geofire.distanceBetween([lat, lng], center);
+                const distanceInM = distanceInKm * 1000;
+                if (distanceInM <= distance) {
+                    matchingDocs.push(doc);
+                }
+            }
+        }
+
+        return matchingDocs;
+    })
+}
+
+export default { getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, locationQuery }

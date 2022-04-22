@@ -29,7 +29,8 @@ const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const storage = getStorage(app)
 const performance = getPerformance(app)
+const geofire = require('geofire-common')
 
 setPersistence(auth, browserLocalPersistence)
 
-export default {app, db, auth, storage, analytics, performance};
+export default {app, db, auth, storage, analytics, performance, geofire};

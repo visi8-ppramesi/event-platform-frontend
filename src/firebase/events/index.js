@@ -31,46 +31,52 @@ export default class{
         })
     }
 
-    static async getEvent(id, withPosts = false){
+    static async getEvent(id, withPosts = false, withDataUrl = true){
         const promises = []
 
         const eventRef = doc(firebase.db, 'events', id)
         const docResult = getDoc(eventRef)
-        console.log(await docResult)
         promises.push(docResult)
 
         if(withPosts){
             const postsRef = collection(firebase.db, 'events', id, 'posts')
-            const postsDoc = getDocs(postsRef)
+            const postsDoc = getDocs(query(postsRef, orderBy('date', 'desc'), limit(10)))
             promises.push(postsDoc)
         }
 
         let event
         await Promise.allSettled(promises).then((res) => {
-            console.log(res[0].value)
             event = res[0].value.data()
-            event.id = res[0].value.id
-            if(withPosts){
-                event.posts = utils.parseDocs(res[1].value.docs)
+            if(event){
+                event.id = res[0].value.id
+                if(withPosts){
+                    event.posts = utils.parseDocs(res[1].value.docs)
+                }
             }
         })
+        if(withDataUrl){
+            event.cover_picture = await utils.getDataUrlFromStorage(event.cover_picture)
+            for(let i = 0; i < event.artists_data.length; i++){
+                event.artists_data[i].profile_picture = await utils.getDataUrlFromStorage(event.artists_data[i].profile_picture)
+            }
+        }
 
         return event
     }
 
-    static async getEvents(limitParam = 10, startAfterParam = null){
+    static async getEvents(limitParam = 10, queries = [], startAfterParam = null){
         const eventRef = collection(firebase.db, 'events')
         let q;
         if(startAfterParam){
-            q = query(eventRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam))
+            q = query(eventRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam), ...queries)
         }else{
-            q = query(eventRef, orderBy('name'), limit(limitParam))
+            q = query(eventRef, orderBy('name'), limit(limitParam), ...queries)
         }
         const snap = await getDocs(q)
         return utils.parseDocs(snap.docs)
     }
 
-    static async getEventsWithCoverDataUrl(limitParam = 10, startAfterParam = null, queries = []){
+    static async getEventsWithCoverDataUrl(limitParam = 10, queries = [], startAfterParam = null){
         const eventRef = collection(firebase.db, 'events')
         let q;
         if(startAfterParam){
@@ -105,6 +111,28 @@ export default class{
         }
         await Promise.allSettled(promises)
         return events
+    }
+
+    static async * generatorEventsWithCoverDataUrl(limitParam = 10, queries = [], startAfterParam = null){
+        const eventRef = collection(firebase.db, 'events')
+        let q;
+        if(startAfterParam){
+            q = query(eventRef, orderBy('name'), limit(limitParam), startAfter(startAfterParam), ...queries)
+        }else{
+            q = query(eventRef, orderBy('name'), limit(limitParam), ...queries)
+        }
+        const snap = await getDocs(q)
+        const docs = Object.values(snap.docs)
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            const image = await utils.getDataUrlFromStorage(data.cover_picture)
+
+            data.cover_picture = image
+            data.doc = docs[i]
+            data.id = docs[i].id
+
+            yield data
+        }
     }
 
     static async toggleEventSubscribe(eventId){

@@ -16,6 +16,7 @@
     "core-js": "^3.8.3",
     "dotenv": "^16.0.0",
     "firebase": "^9.6.11",
+    "geofire-common": "^5.2.0",
     "lodash": "^4.17.21",
     "postcss": "^7.0.39",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
