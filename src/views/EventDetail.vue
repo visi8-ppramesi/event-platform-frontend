@@ -187,40 +187,62 @@
         </button>
       </div>
     </div>
-    <div>
-      <div class="px-5 pt-5 font-bold flex items-center justify-between">
+    <div v-if="!loading">
+      <div class="px-5 pt-5 pb-3 font-bold flex items-center justify-between">
         <div>Posts</div>
       </div>
       <div>
-        <div v-for="item in comments" :key="item.index">
+        <div v-for="(post, idx) in posts" :key="'posts-' + idx">
           <div class="px-5 pb-5">
-            <div class="bg-black w-full border border-solid border-white p-5">
+            <div
+              class="
+                bg-black
+                w-full
+                border border-solid border-white
+                p-5
+                rounded-sm
+              "
+            >
               <div class="flex">
                 <div>
                   <img class="rounded-full w-10" :src="jb" />
                 </div>
 
                 <div class="px-3">
-                  <a class="font-bold">{{ item.artist }}</a>
-                  <a class="text-xs">april 20, 2022</a>
-                  <p class="text-xs">{{ item.star }}</p>
+                  <a class="font-bold mr-2">{{ post.user_data.name }}</a>
+                  <a class="text-xs">{{
+                    post.date.toDate().toLocaleDateString("id-ID", localeOpt)
+                  }}</a>
                 </div>
               </div>
 
               <div class="text-xs mt-2">
-                {{ item.comment }}
-              </div>
-
-              <div class="text-xs mt-2">
-                <a style="color: #00b4b3">{{ item.place }}</a
-                ><a> {{ item.else }}</a>
+                {{ post.text }}
               </div>
             </div>
           </div>
         </div>
+        <div class="px-5 mb-5">
+          <button
+            v-if="showLoadMorePosts"
+            class="
+              bg-blue-800
+              w-full
+              md:w-full
+              hover:bg-blue-700
+              text-white
+              py-2
+              px-4
+              rounded
+            "
+            @click="loadMorePosts"
+          >
+            Load More Posts
+          </button>
+        </div>
       </div>
       <div v-if="userObj">
-        <div class="px-5 pt-5 font-bold flex items-center justify-between">
+        <div class="px-5 pb-2 font-bold flex items-center justify-between">
           <div>Create New Post</div>
         </div>
         <div class="px-5">
@@ -256,16 +278,20 @@
 </template>
 
 <script>
-import { Events, User, Posts } from "@/firebase";
+import { Events, Posts } from "@/firebase";
 import _ from "lodash";
+import settings from '@/settings';
 export default {
   name: "EventDetail",
   data() {
     return {
+      newPostsListener: () => {},
       userObj: null,
       newPost: "",
       loading: true,
       item: {},
+      posts: [],
+      showLoadMorePosts: true,
       localeOpt: {
         weekday: "long",
         year: "numeric",
@@ -274,60 +300,105 @@ export default {
       },
       artists: [],
       jb: require("../assets/JB.png"),
-      comments: [
-        {
-          artist: "Justin Bieber",
-          date: "april 20, 2022",
-          star: "star logo",
-          comment: "he always puts on a great show. im a huge fan of his",
-          place: "Cincinnati, OH",
-          else: "@ Heritage Bank Center",
-        },
-        {
-          artist: "Justin Bieber",
-          date: "april 20, 2022",
-          star: "star logo",
-          comment: "he always puts on a great show. im a huge fan of his",
-          place: "Cincinnati, OH",
-          else: "@ Heritage Bank Center",
-        },
-        {
-          artist: "Justin Bieber",
-          date: "april 20, 2022",
-          star: "star logo",
-          comment: "he always puts on a great show. im a huge fan of his",
-          place: "Cincinnati, OH",
-          else: "@ Heritage Bank Center",
-        },
-        {
-          artist: "Justin Bieber",
-          date: "april 20, 2022",
-          star: "star logo",
-          comment: "he always puts on a great show. im a huge fan of his",
-          place: "Cincinnati, OH",
-          else: "@ Heritage Bank Center",
-        },
-        {
-          artist: "Justin Bieber",
-          date: "april 20, 2022",
-          star: "star logo",
-          comment: "he always puts on a great show. im a huge fan of his",
-          place: "Cincinnati, OH",
-          else: "@ Heritage Bank Center",
-        },
-      ],
+    //   comments: [
+    //     {
+    //       artist: "Justin Bieber",
+    //       date: "april 20, 2022",
+    //       star: "star logo",
+    //       comment: "he always puts on a great show. im a huge fan of his",
+    //       place: "Cincinnati, OH",
+    //       else: "@ Heritage Bank Center",
+    //     },
+    //     {
+    //       artist: "Justin Bieber",
+    //       date: "april 20, 2022",
+    //       star: "star logo",
+    //       comment: "he always puts on a great show. im a huge fan of his",
+    //       place: "Cincinnati, OH",
+    //       else: "@ Heritage Bank Center",
+    //     },
+    //     {
+    //       artist: "Justin Bieber",
+    //       date: "april 20, 2022",
+    //       star: "star logo",
+    //       comment: "he always puts on a great show. im a huge fan of his",
+    //       place: "Cincinnati, OH",
+    //       else: "@ Heritage Bank Center",
+    //     },
+    //     {
+    //       artist: "Justin Bieber",
+    //       date: "april 20, 2022",
+    //       star: "star logo",
+    //       comment: "he always puts on a great show. im a huge fan of his",
+    //       place: "Cincinnati, OH",
+    //       else: "@ Heritage Bank Center",
+    //     },
+    //     {
+    //       artist: "Justin Bieber",
+    //       date: "april 20, 2022",
+    //       star: "star logo",
+    //       comment: "he always puts on a great show. im a huge fan of his",
+    //       place: "Cincinnati, OH",
+    //       else: "@ Heritage Bank Center",
+    //     },
+    //   ],
     };
   },
   methods: {
-      submitNewPost(){
-          // eslint-disable-next-line no-unused-vars
-          Posts.createPost('events', this.$route.params.id, this.newPost).then((post) => {
-              this.newPost = ''
-          })
+    async loadMorePosts() {
+        const newPosts = await Posts.loadMorePosts('events', this.$route.params.id, this.posts[this.posts.length - 1].doc)
+        this.parsePosts(newPosts)
+    },
+    submitNewPost() {
+      Posts.createPost("events", this.$route.params.id, this.newPost).then(
+        // eslint-disable-next-line no-unused-vars
+        (post) => {
+          this.newPost = "";
+        }
+      );
+    },
+    createNewPostsListener() {
+      const self = this;
+      var initState = true;
+      return Posts.createNewPostsListener(
+        "events",
+        this.$route.params.id,
+        function (res) {
+          if (initState) {
+            initState = false;
+          } else {
+            if (!res.docChanges().empty) {
+              self.parsePosts(
+                Object.values(res.docs).map((v) => v.data()),
+                "unshift"
+              );
+            }
+          }
+        }
+      );
+    },
+    async parsePosts(posts, method = "push") {
+      const postsGenerator = Posts.generatorPosts(posts);
+      let count = 0
+      for await (const post of postsGenerator) {
+        this.posts[method](post);
+        count++;
       }
+
+      this.showLoadMorePosts = count >= settings.maxLoadPosts
+    },
+  },
+  beforeDestroy() {
+    this.newPostsListener();
+  },
+  mounted() {
+    this.createNewPostsListener().then((res) => {
+      this.newPostsListener = res;
+    });
+
+    this.userObj = this.$store.state.user.uid;
   },
   created() {
-    this.userObj = User.getCurrentUser();
     this.loading = true;
     Events.getEvent(this.$route.params.id, true).then((event) => {
       if (_.isNil(event)) {
@@ -335,7 +406,8 @@ export default {
       } else {
         this.item = event;
         this.artists = event.artists_data;
-        console.log(event);
+
+        this.parsePosts(this.item.posts);
         this.loading = false;
       }
     });

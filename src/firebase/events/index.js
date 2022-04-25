@@ -17,6 +17,7 @@ import {
 } from "firebase/firestore";  
 import { validatePostData } from '@/_services/validators.js';
 import utils from '../utils/index.js'
+import settings from '@/settings.js';
 
 export default class{
     static async createPost(id, text, images = []){
@@ -40,7 +41,7 @@ export default class{
 
         if(withPosts){
             const postsRef = collection(firebase.db, 'events', id, 'posts')
-            const postsDoc = getDocs(query(postsRef, orderBy('date', 'desc'), limit(10)))
+            const postsDoc = getDocs(query(postsRef, orderBy('date', 'desc'), limit(settings.maxLoadPosts)))
             promises.push(postsDoc)
         }
 

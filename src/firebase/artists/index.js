@@ -13,6 +13,7 @@ import {
     increment, 
     orderBy,
     limit,
+    where,
 } from "firebase/firestore";  
 // import { getBlob, ref } from 'firebase/storage';
 import { validatePostData } from '@/_services/validators.js';
@@ -31,7 +32,29 @@ export default class{
         })
     }
 
-    static async getArtist(id, withPosts = false){
+    static async getArtistEvents(id, queries = []){
+        const artistRef = doc(firebase.db, 'artists', id)
+        const eventRef = collection(firebase.db, 'events')
+        const queriedRef = query(eventRef, where('artists', 'array-contains', artistRef), ...queries)
+
+        const snap = await getDocs(queriedRef)
+        const docs = Object.values(snap.docs)
+        const events = []
+        const promises = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            promises.push(utils.getDataUrlFromStorage(data.cover_picture).then((image) => {
+                data.cover_picture = image
+                data.doc = docs[i]
+                data.id = docs[i].id
+                events.push(data)
+            }))
+        }
+        await Promise.allSettled(promises)
+        return events
+    }
+
+    static async getArtist(id, withPosts = false, withDataUrl = true){
         const promises = []
 
         const artistsRef = doc(firebase.db, 'artists', id)
@@ -50,10 +73,13 @@ export default class{
             if(artist){
                 artist.id = res[0].value.id
                 if(withPosts){
-                    artist.posts = utils.parseDocs(res[1].value.data())
+                    artist.posts = utils.parseDocs(res[1].value.docs)
                 }
             }
         })
+        if(withDataUrl){
+            artist.profile_picture = await utils.getDataUrlFromStorage(artist.profile_picture)
+        }
 
         return artist
     }
