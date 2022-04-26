@@ -1,6 +1,7 @@
 <template>
   <div id="app" style="background-color: #544f4f" class="h-full">
-   <SideBar />
+    <NavBar class="md:text-2xl" title="Visi 8 Concert"/>
+    <SideBar />
     <div class="md:mx-10 md:h-full">
       <router-view />
     </div>
@@ -12,12 +13,14 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 // import { Artists, utils } from './firebase/index.js'
 import SideBar from "./components/menu/SideBar.vue";
+import NavBar from "./components/NavBar.vue";
 // import { Artists } from './firebase';
 export default {
   name: "App",
   components: {
     // HelloWorld
     SideBar,
+    NavBar
   },
   data(){
     return {

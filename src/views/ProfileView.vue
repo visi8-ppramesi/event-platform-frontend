@@ -1,6 +1,5 @@
 <template>
   <div style="background-color: #202424" class="home h-full w-full text-white">
-    <NavBar class="py-2 md:text-2xl" title="Visi 8 Admin" />
     <div class="bg-black h-screen">
         <div class="py-5 ">
             <p class="p-3 md:text-2xl" style="background-color: #202424;">My Upcoming Events</p>
@@ -31,12 +30,10 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
 import jb from '../assets/JB.png'
 export default {
   name: 'ProfileView',
   components: {
-    NavBar
   },
   data(){
         return {

@@ -1,6 +1,5 @@
 <template>
     <div class="bg-black h-full pb-8 w-full text-white">
-    <NavBar class="md:text-2xl" title="Home View"/>
     <div>
         <div class="flex items-center justify-center py-5">
             <img class="rounded-full h-24 w-24" :src="jb" />
@@ -176,11 +175,9 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
 export default {
   name: 'SettingsView',
   components: {
-    NavBar,
   },
   data(){
     return {
