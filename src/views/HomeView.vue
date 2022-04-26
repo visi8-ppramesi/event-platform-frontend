@@ -114,9 +114,7 @@
     </div>
 
     <div class="p-3">
-      <p class="text-l md:text-2xl">Upcoming festival</p>
-      <p class="text-xs">Are you ready as we are for festival season ?!</p>
-
+      <section-title title="Upcoming festival" description="Are you ready as we are for festival season ?!" />
       <horizontal-slider
         ref="upcomingSlider"
         :content="upcoming"
@@ -128,17 +126,7 @@
     </div>
 
     <div class="p-3">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-l md:text-2xl">Whats hot in your area</p>
-          <p class="text-xs">Dont miss the shows everyones talking about</p>
-        </div>
-
-        <div class="invisible md:block md:visible flex items-center justify-center">
-          <p class="text-l md:text-xl">View All</p>
-        </div>
-      </div>
-
+      <section-title type="view" title="Whats hot in your area" description="Dont miss the shows everyones talking about" />
       <card-grid ref="hotGrid" :content="hot" type="discover" linkTo="event" />
 
       <div class="flex items-center justify-center pt-5 w-full">
@@ -162,17 +150,7 @@
     </div>
 
     <div class="p-3">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-l md:text-2xl">Get ready for the weekend</p>
-          <p class="text-xs">find something to look forward u</p>
-        </div>
-
-        <div class="invisible md:block md:visible flex items-center justify-center">
-          <p class="text-l md:text-xl">View All</p>
-        </div>
-      </div>
-
+    <section-title type="view" title="Get ready for the weekend" description="find something to look forward u" />
       <card-grid ref="futureGrid" :content="future" type="discover" linkTo="event" />
 
       <div class="flex items-center justify-center pt-5 w-full">
@@ -196,8 +174,7 @@
     </div>
 
     <div class="p-3">
-      <p class="text-l md:text-2xl">Trending artists</p>
-      <p class="text-xs">These artists are topping the charts this week</p>
+      <section-title title="Trending artists" description="These artists are topping the charts this week" />
 
       <trending-slider ref="trendingSlider" :content="trending" linkTo="artist" />
     </div>
@@ -208,6 +185,7 @@
 // import { mapState, mapActions } from 'vuex'
 import HorizontalSlider from "@/components/HorizontalSlider.vue";
 import CardGrid from "@/components/CardGrid.vue";
+import SectionTitle from "@/components/SectionTitle.vue";
 import TrendingSlider from "@/components/TrendingSlider.vue";
 // import jb from "../assets/JB.png";
 import { Artists, Events } from "@/firebase/index.js";
@@ -218,6 +196,7 @@ export default {
     HorizontalSlider,
     CardGrid,
     TrendingSlider,
+    SectionTitle,
   },
   data() {
     return {
