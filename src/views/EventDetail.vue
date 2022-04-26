@@ -415,7 +415,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .header {
   background-repeat: no-repeat;
 }

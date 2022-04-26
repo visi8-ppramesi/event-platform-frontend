@@ -1,5 +1,6 @@
 <template>
   <div style="background-color: #202424" class="h-full w-full text-white">
+    <hero-section />
     <div class="hidden md:block md:visible px-2">
       <div
         id="carouselExampleControls"
@@ -188,6 +189,7 @@
 
 <script>
 // import { mapState, mapActions } from 'vuex'
+import HeroSection from "../components/HeroSection.vue"
 import HorizontalSlider from "@/components/HorizontalSlider.vue";
 import CardGrid from "@/components/CardGrid.vue";
 import TrendingSlider from "@/components/TrendingSlider.vue";
@@ -197,6 +199,7 @@ import settings from "../settings.js";
 export default {
   name: "HomeView",
   components: {
+    HeroSection,
     HorizontalSlider,
     CardGrid,
     TrendingSlider,

@@ -40,12 +40,25 @@ export default {
 .scrolling-wrapper{
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto;
+    overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
     padding-top: 5px;
+    padding-bottom: 10px;
 }
 
 .scrolling-wrapper::-webkit-scrollbar {
-    display: none;
+  width: 1em;
+  height: 5px;
 }
+ 
+.scrolling-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+ 
+.scrolling-wrapper::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 10px;
+}
+
 </style>

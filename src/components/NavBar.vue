@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="main-nav md:hidden">
-            <div class="logo text-white">
+            <div class="logo text-white my-auto">
                 {{title}}
             </div>
             <BurgerMenu></BurgerMenu>
@@ -9,7 +9,7 @@
 
         <div class="md:block hidden md:visible">
             <nav class="main-nav p-5">
-                <div class="text-sm">Visi8 Concert</div>
+                <div class="text-sm text-white">Visi8 Concert</div>
                 <div class="flex items-center justify-center logo text-white">
                     <ul class="flex flex-row space-x-8 mt-0 text-sm font-medium">
                         <li>
