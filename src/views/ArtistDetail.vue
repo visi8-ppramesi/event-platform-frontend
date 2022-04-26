@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-black h-full w-full pb-8 text-white">
-    <div class="bg-cover header w-full h-96">
+  <div class="bg-black h-full w-full pb-8 text-white" v-if="!loading">
+    <div class="bg-cover header w-full h-96" :style="{ 'background-image': 'url(' + item.profile_picture + ')' }">
       <div class="backdrop-filter backdrop-blur-md w-full h-96">
         <div class="md:flex">
           <div class="flex items-center justify-center">
@@ -12,7 +12,7 @@
                 rounded-full
                 md:p-3 md:h-64 md:w-64 md:mt-28
               "
-              :src="jb"
+              :src="item.profile_picture"
             />
           </div>
           <div class="md:flex md:items-center md:p-3 md:mt-24">
@@ -271,13 +271,14 @@
 </template>
 
 <script>
-import { Artists } from '@/firebase';
-import _ from 'lodash'
+import { Artists } from "@/firebase";
+import _ from "lodash";
 export default {
   name: "ArtistDetail",
   components: {},
   data() {
     return {
+      loading: true,
       datas: [
         {
           title: "Justin Bieber",
@@ -416,27 +417,26 @@ export default {
       item: [],
     };
   },
-  mounted(){
-      Artists.getArtist(this.$route.params.id, true).then((artist) => {
-        if (_.isNil(artist)) {
-            this.$router.push("/404");
-        } else {
-            console.log(artist)
-            this.item = artist;
-            this.loading = false;
-        }
-      })
-      Artists.getArtistEvents(this.$route.params.id).then((events) => {
-          console.log(events)
-      })
+  mounted() {
+    Artists.getArtist(this.$route.params.id, true).then((artist) => {
+      if (_.isNil(artist)) {
+        this.$router.push("/404");
+      } else {
+        console.log(artist);
+        this.item = artist;
+        this.loading = false;
+      }
+    });
+    Artists.getArtistEvents(this.$route.params.id).then((events) => {
+      console.log(events);
+    });
   },
-  created(){},
+  created() {},
 };
 </script>
 
 <style>
 .header {
-  background-image: url("../../src/assets/JB.png");
   background-repeat: no-repeat;
 }
 

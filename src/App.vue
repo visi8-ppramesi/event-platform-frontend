@@ -24,6 +24,9 @@ export default {
 
     }
   },
+  created(){
+    navigator.geolocation.getCurrentPosition(console.log, console.error)
+  }
 };
 </script>
 
