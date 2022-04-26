@@ -1,6 +1,5 @@
 <template>
   <div style="background-color: #202424" class="h-full w-full text-white">
-    <NavBar class="py-2 md:text-2xl" title="Home View" />
     <div class="hidden md:block md:visible px-2">
       <div
         id="carouselExampleControls"
@@ -192,7 +191,6 @@
 import HorizontalSlider from "@/components/HorizontalSlider.vue";
 import CardGrid from "@/components/CardGrid.vue";
 import TrendingSlider from "@/components/TrendingSlider.vue";
-import NavBar from "@/components/NavBar.vue";
 // import jb from "../assets/JB.png";
 import { Artists, Events } from "@/firebase/index.js";
 import settings from "../settings.js";
@@ -202,7 +200,6 @@ export default {
     HorizontalSlider,
     CardGrid,
     TrendingSlider,
-    NavBar,
   },
   data() {
     return {
