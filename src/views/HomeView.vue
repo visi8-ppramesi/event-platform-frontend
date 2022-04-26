@@ -128,14 +128,23 @@
     </div>
 
     <div class="p-3">
-      <p class="text-l md:text-2xl">Whats hot in your area</p>
-      <p class="text-xs">Dont miss the shows everyones talking about</p>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-l md:text-2xl">Whats hot in your area</p>
+          <p class="text-xs">Dont miss the shows everyones talking about</p>
+        </div>
+
+        <div class="invisible md:block md:visible flex items-center justify-center">
+          <p class="text-l md:text-xl">View All</p>
+        </div>
+      </div>
 
       <card-grid ref="hotGrid" :content="hot" type="discover" linkTo="event" />
 
       <div class="flex items-center justify-center pt-5 w-full">
         <button
           class="
+            md:hidden
             bg-red-800
             w-full
             md:w-full
@@ -153,14 +162,23 @@
     </div>
 
     <div class="p-3">
-      <p class="text-l md:text-2xl">Get ready for the weekend</p>
-      <p class="text-xs">find something to look forward u</p>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-l md:text-2xl">Get ready for the weekend</p>
+          <p class="text-xs">find something to look forward u</p>
+        </div>
+
+        <div class="invisible md:block md:visible flex items-center justify-center">
+          <p class="text-l md:text-xl">View All</p>
+        </div>
+      </div>
 
       <card-grid ref="futureGrid" :content="future" type="discover" linkTo="event" />
 
       <div class="flex items-center justify-center pt-5 w-full">
         <button
           class="
+            md:hidden
             bg-red-800
             w-full
             md:w-full
