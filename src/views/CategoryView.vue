@@ -27,11 +27,7 @@
 
     <div v-for="item in content" :key="item.index">
         <div class="mt-3">
-            <div style="background-color: #202424" class="p-3 font-bold text-xs text-white">
-                {{item.dateTitle}}
-            </div>
-
-            <div class="flex items-center justify-start p-3 w-full">
+            <div class="flex pb-2 items-center justify-start px-3 w-full">
                 <div>
                     <img class="w-24 h-24 " :src="item.image" />
                 </div>
@@ -46,6 +42,7 @@
                 <font-awesome-icon icon="fa-solid fa-ellipsis" class="h-6" />
             </div>
             
+            <hr />
         </div>
     </div> 
 
