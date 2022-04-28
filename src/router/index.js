@@ -12,6 +12,7 @@ import FestivalDetail from '../views/FestivalDetail.vue'
 import SettingsView from '../views/SettingsView.vue'
 import ArtistDetail from '../views/ArtistDetail.vue'
 import NotFoundView from '../views/404View.vue'
+import CategoryView from '../views/CategoryView.vue'
 
 Vue.use(VueRouter)
 
@@ -85,6 +86,11 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: SettingsView
+  },
+  {
+    path: '/category/view',
+    name: 'categories',
+    component: CategoryView
   },
   {
     path: '*',
