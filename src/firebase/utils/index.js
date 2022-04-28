@@ -9,6 +9,15 @@ const getBlob = async (gsPath) => {
 
 const getDataUrlFromStorage = async (gsPath) => {
     const blob = await getBlob(gsPath)
+
+    // var img = document.createElement('img');
+    // let url = URL.createObjectURL(blob)
+    // img.src = url
+    // document.getElementById('app').appendChild(img);
+    // img.onload = () => {
+    //     URL.revokeObjectURL(url)
+    // }
+    
     return await new Promise((resolve, reject) => {
         var a = new FileReader();
         a.onload = function(e) {
