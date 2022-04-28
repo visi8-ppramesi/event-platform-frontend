@@ -435,7 +435,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .header {
   background-repeat: no-repeat;
 }
@@ -446,9 +446,21 @@ export default {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 .scrolling-wrapper::-webkit-scrollbar {
-  display: none;
+  width: 1em;
+  height: 5px;
+}
+ 
+.scrolling-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+ 
+.scrolling-wrapper::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 10px;
 }
 </style>

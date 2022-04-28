@@ -2,7 +2,7 @@
   <div id="app" style="background-color: #544f4f" class="h-full">
     <NavBar class="md:text-2xl" title="Visi 8 Concert"/>
     <SideBar />
-    <div class="md:mx-10 md:h-full">
+    <div class="md:mx-16 md:h-full">
       <router-view />
     </div>
   </div>
