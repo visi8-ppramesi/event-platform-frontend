@@ -1,5 +1,5 @@
 <template>
-  <footer class="text-center lg:text-left text-gray-100" style="background-color: rgb(32, 36, 36);">
+  <footer class="text-center lg:text-left text-gray-100" style="background-color: #2a2f2f;">
     <div
       class="
         flex
@@ -290,7 +290,7 @@
         </div>
       </div>
     </div>
-    <div class="text-center p-6" style="background-color: rgb(32, 36, 36);">
+    <div class="text-center p-6" style="background-color: #2a2f2f;">
       <span>© 2021 Copyright:</span>
       <a
         class="text-gray-100 font-semibold"

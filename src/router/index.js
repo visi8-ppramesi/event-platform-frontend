@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import ExploreView from '../views/ExploreView.vue'
-import FeedView from '../views/FeedView.vue'
-import AlertView from '../views/AlertView.vue'
-import ProfileView from '../views/ProfileView.vue'
-import LoginView from '../views/LoginView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import EventDetail from '../views/EventDetail.vue'
-import FestivalDetail from '../views/FestivalDetail.vue'
-import SettingsView from '../views/SettingsView.vue'
-import ArtistDetail from '../views/ArtistDetail.vue'
-import NotFoundView from '../views/404View.vue'
+// import HomeView from '../views/HomeView.vue'
+// import ExploreView from '../views/ExploreView.vue'
+// import FeedView from '../views/FeedView.vue'
+// import AlertView from '../views/AlertView.vue'
+// import ProfileView from '../views/ProfileView.vue'
+// import LoginView from '../views/LoginView.vue'
+// import RegisterView from '../views/RegisterView.vue'
+// import EventDetail from '../views/EventDetail.vue'
+// import FestivalDetail from '../views/FestivalDetail.vue'
+// import SettingsView from '../views/SettingsView.vue'
+// import ArtistDetail from '../views/ArtistDetail.vue'
+// import NotFoundView from '../views/404View.vue'
 
 Vue.use(VueRouter)
 
@@ -19,17 +19,17 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import("../views/HomeView.vue")
   },
   {
     path: '/explore',
     name: 'explore',
-    component: ExploreView
+    component: () => import("../views/ExploreView.vue")
   },
   {
     path: '/feed',
     name: 'feed',
-    component: FeedView,
+    component: () => import("../views/FeedView.vue"),
     meta: {
       requiresAuth: true
     }
@@ -37,7 +37,7 @@ const routes = [
   {
     path: '/alert',
     name: 'Alert',
-    component: AlertView,
+    component: () => import("../views/AlertView.vue"),
     meta: {
       requiresAuth: true
     }
@@ -45,7 +45,7 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: ProfileView,
+    component: () => import("../views/ProfileView.vue"),
     meta: {
       requiresAuth: true
     }
@@ -53,7 +53,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: LoginView,
+    component: () => import("../views/LoginView.vue"),
     meta: {
       requiresLoggedOut: true
     }
@@ -61,7 +61,7 @@ const routes = [
   {
     path: '/register',
     name: 'register',
-    component: RegisterView,
+    component: () => import("../views/RegisterView.vue"),
     meta: {
       requiresLoggedOut: true
     }
@@ -69,27 +69,27 @@ const routes = [
   {
     path: '/artist/:id',
     name: 'artist',
-    component: ArtistDetail
+    component: () => import("../views/ArtistDetail.vue")
   },
   {
     path: '/festival/detail',
     name: 'festival',
-    component: FestivalDetail
+    component: () => import("../views/FestivalDetail.vue")
   },
   {
     path: '/event/:id',
     name: 'event',
-    component: EventDetail
+    component: () => import("../views/EventDetail.vue")
   },
   {
     path: '/settings',
     name: 'settings',
-    component: SettingsView
+    component: () => import("../views/SettingsView.vue")
   },
   {
     path: '*',
     name: '404',
-    component: NotFoundView,
+    component: () => import("../views/404View.vue"),
   }
 ]
 

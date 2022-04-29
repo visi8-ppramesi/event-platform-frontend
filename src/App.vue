@@ -1,8 +1,8 @@
 <template>
   <div id="app" style="background-color: #202424" class="h-full">
-    <NavBar class="md:text-2xl" title="Visi 8 Concert"/>
+    <NavBar class="md:text-2xl shadow-lg" title="Visi 8 Concert"/>
     <SideBar />
-    <div class="md:mx-16 md:h-full">
+    <div class="md:mx-16 md:h-full pt-4">
       <router-view />
     </div>
     <FooterComponent class="mt-20" />

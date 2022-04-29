@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faBell, faComments, faHouse, faLocationArrow, faAngleRight, faBuilding, faCalendar } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import './assets/tailwind.css'
 
 // import { backend } from './_helpers';
 // backend();
